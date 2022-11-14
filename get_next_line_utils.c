@@ -6,35 +6,32 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:12:53 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/10 16:37:26 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/14 13:10:19 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strchr(const char *s, int c)
 {
-	int		i;
-	char	*dest;
+	int	i;
 
 	i = 0;
-	dest = malloc(sizeof(*s1) * (ft_strlen(s1) + 1));
-	if (!dest)
-		return (NULL);
-	while (s1[i])
+	while (s[i])
 	{
-		dest[i] = s1[i];
+		if (s[i] == (char)c)
+			return ((char *)(&s[i]));
 		i++;
 	}
-	dest[i] = '\0';
-	free(s1);
-	return (dest);
+	if (s[i] == (char)c)
+		return ((char *)(&s[i]));
+	return (NULL);
 }
 
-char	*ft_strjoin_gnl(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	j;
 	char	*str;
 
 	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
@@ -50,29 +47,28 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = '\0';
-	free(s1);
 	return (str);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+char	*ft_strdup(char *s1)
 {
 	size_t	i;
-	size_t	len;
+	char	*dest;
 
 	i = 0;
-	len = ft_strlen(src);
-	if (!dst || !src || !dstsize)
-		return (len);
-	while (src[i] && i < dstsize - 1)
+	dest = malloc(sizeof(*s1) * (ft_strlen(s1) + 1));
+	if (!dest)
+		return (NULL);
+	while (s1[i])
 	{
-		dst[i] = src[i];
+		dest[i] = s1[i];
 		i++;
 	}
-	dst[i] = '\0';
-	return (len);
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, size_t start, size_t len)
 {
 	char	*str;
 	size_t	i;
@@ -96,4 +92,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	str[i] = '\0';
 	return (str);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

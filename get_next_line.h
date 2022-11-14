@@ -6,7 +6,7 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:06 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/10 16:24:01 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/14 13:18:23 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,21 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 
-BUFFER_SIZE = 42;
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE = 42
+# endif
 
 char	*get_next_line(int fd);
-char	*ft_strjoin_gnl(char const *s1, char const *s2);
-char	*ft_strdup_gnl(const char *s1);
-int		ft_strchr_gnl(char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+
+// get_line_break tool functions
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(char *s1);
+
+// get_line tool functions
+char	*ft_substr(char const *s, size_t start, size_t len);
+size_t	ft_strlen(const char *s);
 
 #endif

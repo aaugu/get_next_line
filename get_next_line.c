@@ -6,33 +6,67 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:03 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/10 16:36:22 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/14 13:26:29 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+char	*get_line_break(int fd, char *stash);
+
 char	*get_next_line(int fd)
 {
-	static char	*temp;
-	char		*line;
-	char		*buf;
-	int			i;
+	static char	*stash;
 
-	temp = NULL;
-	while (read(fd, buf, BUFFER_SIZE))
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	stash = get_line_break(fd, stash);
+	return (stash);
+}
+
+char	*get_line_break(int fd, char *stash)
+{
+	char	*buf;
+	char	*temp;
+
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (NULL);
+	buf[BUFFER_SIZE] = '\0';
+	stash = ft_strdup("");
+	while (ft_strchr(stash, '\n') == NULL)
 	{
-		if (temp)
-			temp = ft_strjoin_gnl(temp, buf);
+		read(fd, buf, BUFFER_SIZE);
+		if (stash[0] == '\0')
+			stash = ft_strdup(buf);
 		else
-			temp = ft_strdup_gnl(buf);
-		i = ft_strchr_gnl(temp);
-		if (i)
-			break ;
+		{
+			temp = ft_strjoin(stash, buf);
+			free(stash);
+			stash = temp;
+		}
 	}
-	line = ft_strlcpy(line, temp, i - 1);
-	temp = ft_substr(temp, i, ft_strlen(temp) - i);
-	return (line);
+	free(buf);
+	return (stash);
+}
+/*
+char	*get_line(char *line, char *stash)
+{
+}
+*/
+
+int	main(void)
+{
+	int	fd;
+
+	fd = open("numbers.dict", O_RDONLY);
+	if (fd == -1)
+	{
+		write(1, "Dict Error\n", 11);
+		return (0);
+	}
+	printf("%s", get_next_line(fd));
+	return (0);
 }
 
 /*
