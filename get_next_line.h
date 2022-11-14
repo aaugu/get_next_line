@@ -6,7 +6,7 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:06 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/14 13:18:23 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/14 15:06:31 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd);
 
 // get_line_break tool functions
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strdup(char *s1);
 
 // get_line tool functions
