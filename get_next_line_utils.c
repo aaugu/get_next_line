@@ -6,7 +6,7 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:12:53 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/14 15:42:03 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/15 16:42:22 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	j = 0;
 	while (s2[j])
 	{
-		str[i] = s2[j];
-		i++;
-		j++;
+		str[i++] = s2[j++];
 	}
 	str[i] = '\0';
 	return (str);
