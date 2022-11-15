@@ -6,78 +6,77 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:03 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/14 20:48:10 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/15 14:16:27 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-ssize_t	get_line_break(int fd, char **stash);
-void	append_buf_to_stash(char *buf, char **stash);
-char	*get_line(char **stash);
+char	*get_line_break(int fd, char *stash);
+char	*get_line(char *stash);
+char	*get_new_stash(char *stash);
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	ssize_t		read_bytes;
 	char		*line;
 
+	printf("%d", fd);
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	stash = ft_strdup("");
-	read_bytes = get_line_break(fd, &stash);
-	line = get_line(&stash);
+		return (NULL);
+	if (!stash)
+		stash = ft_strdup("");
+	stash = get_line_break(fd, stash);
+	if (stash == NULL)
+		return (NULL);
+	line = get_line(stash);
+	stash = get_new_stash(stash);
 	return (line);
 }
 
-/*
--> Until a '\n' is found in stash
-	-> Read
-	-> Then append buf on stash
--> Free buf as it is not needed anymore
--> Returns how many bytes where read on last read
-*/
-ssize_t	get_line_break(int fd, char **stash)
+// Until a '\n' is found in stash, read and then append buff on stash
+char	*get_line_break(int fd, char *stash)
 {
-	char	buf[BUFFER_SIZE + 1];
+	char	buff[BUFFER_SIZE + 1];
 	ssize_t	read_bytes;
 
-	read_bytes = 0;
-	while (ft_strchr(*stash, '\n') == NULL)
+	read_bytes = 1;
+	while (!ft_strchr(stash, '\n') || read_bytes == 0)
 	{
-		read_bytes = read(fd, buf, BUFFER_SIZE);
-		buf[read_bytes] = '\0';
-		append_buf_to_stash(buf, stash);
+		read_bytes = read(fd, buff, BUFFER_SIZE);
+		if (read_bytes == -1)
+			return (NULL);
+		buff[read_bytes] = '\0';
+		stash = ft_strjoin(stash, buff);
 	}
-	return (read_bytes);
+	return (stash);
 }
 
-void	append_buf_to_stash(char *buf, char **stash)
+//Manipulating stash to get the line
+char	*get_line(char *stash)
 {
-	char	*temp;
-
-	temp = ft_strjoin(*stash, buf);
-	free(*stash);
-	*stash = temp;
-}
-
-//Manipulating stash to get the line and delete that line part from stash
-char	*get_line(char **stash)
-{
-	char	*temp;
 	char	*line;
 	int		i;
 
 	i = 0;
-	while (*stash[i] != '\n')
+	while (stash[i] != '\n' && !stash[i])
 		i++;
-	line = ft_substr(*stash, 0, i + 1);
-	temp = ft_substr(*stash, i + 1, ft_strlen(*stash) - i + 1);
-	free(*stash);
-	*stash = temp;
+	line = ft_substr(stash, 0, i + 1);
 	return (line);
 }
 
+//Manipulating stash to delete the line part from it and getting checkpoint
+char	*get_new_stash(char *stash)
+{
+	int		i;
+
+	i = 0;
+	while (stash[i] != '\n')
+		i++;
+	stash = ft_substr(stash, i + 1, ft_strlen(stash) - i + 1);
+	return (stash);
+}
+/*
 int	main(void)
 {
 	int	fd;
@@ -85,30 +84,17 @@ int	main(void)
 	fd = open("numbers.dict", O_RDONLY);
 	if (fd == -1)
 	{
+		close(fd);
 		write(1, "Dict Error\n", 11);
 		return (0);
 	}
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
+	printf("Line > %s", get_next_line(fd));
+	printf ("===========\n");
+	printf("Line > %s", get_next_line(fd));
+	printf ("===========\n");
+	printf("Line > %s", get_next_line(fd));
+	printf ("===========\n");
+	close(fd);
 	return (0);
 }
-
-/*
-Fonctions externes > read, malloc, free
-
-- Tant qu'on est pas à la fin du fd, lire de la taille du buffer
-	- Concaténer ou joindre le buff dans une variable tampon
-	- Vérifier si '\n' est dans la variable tampon
-		-> si oui arrêter la boucle
-		-> sinon continuer à lire
-
-- Après avoir trouvé '\n' dans tampon
-	- stocker toute la string jusqu'à "\n" compris dans une variable line
-	- retirer du tampon la partie qui a été stockée dans line
-
-- Renvoyer line
-
 */
