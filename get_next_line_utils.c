@@ -6,12 +6,13 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:12:53 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/16 14:36:01 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/16 16:58:43 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+// Locates the first occurrence of c (converted to a char) in s.
 char	*ft_strchr(const char *s, int c)
 {
 	int	i;
@@ -28,6 +29,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
+// Join s1 and s2 on a new str.
 char	*ft_strjoin(const char *s1, const char *s2)
 {
 	size_t	i;
@@ -52,6 +54,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	return (str);
 }
 
+// Duplicate s1 content on a new str.
 char	*ft_strdup(char *s1)
 {
 	size_t	i;
@@ -70,6 +73,7 @@ char	*ft_strdup(char *s1)
 	return (dest);
 }
 
+// Create a new str from s, from index start to a length of len.
 char	*ft_substr(char const *s, size_t start, size_t len)
 {
 	char	*str;
@@ -96,6 +100,7 @@ char	*ft_substr(char const *s, size_t start, size_t len)
 	return (str);
 }
 
+// Returns size of a str.
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;

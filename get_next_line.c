@@ -6,7 +6,7 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:03 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/16 16:29:28 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:05:35 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int		ft_get_line_break(int fd, char **stash);
 char	*ft_get_line(char **stash);
+void	ft_free(char **p);
 
 char	*get_next_line(int fd)
 {
@@ -31,11 +32,15 @@ char	*get_next_line(int fd)
 	read_bytes = ft_get_line_break(fd, &stash);
 	if ((read_bytes == -1) || (read_bytes == 0 && !ft_strlen(stash)))
 	{
-		free(stash);
-		stash = NULL;
+		ft_free(&stash);
 		return (NULL);
 	}
 	line = ft_get_line(&stash);
+	if (!line)
+	{
+		ft_free(&stash);
+		return (NULL);
+	}
 	return (line);
 }
 
@@ -58,7 +63,10 @@ int	ft_get_line_break(int fd, char **stash)
 		buff[read_bytes] = '\0';
 		temp = ft_strjoin(*stash, buff);
 		if (!temp)
-			return (-1);
+		{
+			read_bytes = -1;
+			break ;
+		}
 		free(*stash);
 		*stash = temp;
 	}
@@ -67,7 +75,7 @@ int	ft_get_line_break(int fd, char **stash)
 }
 
 // Manipulating stash to get the line
-// Manipulating stash to delete the line part from it and getting checkpoint
+// And delete the line part from it and getting checkpoint
 char	*ft_get_line(char **stash)
 {
 	char	*line;
@@ -82,10 +90,19 @@ char	*ft_get_line(char **stash)
 		return (NULL);
 	temp = ft_substr(*stash, i + 1, ft_strlen(*stash) - i + 1);
 	if (!temp)
+	{
+		ft_free(&line);
 		return (NULL);
+	}
 	free(*stash);
 	*stash = temp;
 	return (line);
+}
+
+void	ft_free(char **p)
+{
+	free(*p);
+	*p = NULL;
 }
 /*
 int	main(void)
