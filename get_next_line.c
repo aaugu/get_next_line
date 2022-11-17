@@ -6,12 +6,11 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:03 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/16 17:05:35 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/17 09:38:40 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "string.h"
 
 int		ft_get_line_break(int fd, char **stash);
 char	*ft_get_line(char **stash);
