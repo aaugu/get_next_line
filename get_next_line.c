@@ -6,7 +6,7 @@
 /*   By: aaugu <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 10:13:03 by aaugu             #+#    #+#             */
-/*   Updated: 2022/11/17 09:38:40 by aaugu            ###   ########.fr       */
+/*   Updated: 2022/11/17 10:38:23 by aaugu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			read_bytes;
 
-	if ((fd < 0 || fd >= 255) || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!stash)
 		stash = ft_strdup("");
